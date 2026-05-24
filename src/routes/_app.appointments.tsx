@@ -127,7 +127,7 @@ function AppointmentsPage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Select value={a.status} onValueChange={(v) => updateStatus.mutate({ id: a.id, status: v })}>
+                  <Select value={a.status} onValueChange={(v) => updateStatus.mutate({ id: a.id, status: v as typeof STATUSES[number] })}>
                     <SelectTrigger className="w-36 h-9"><SelectValue /></SelectTrigger>
                     <SelectContent>
                       {STATUSES.map(s => <SelectItem key={s} value={s} className="capitalize">{s.replace("_", " ")}</SelectItem>)}
