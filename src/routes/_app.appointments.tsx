@@ -61,7 +61,7 @@ function AppointmentsPage() {
   });
 
   const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
+    mutationFn: async ({ id, status }: { id: string; status: typeof STATUSES[number] }) => {
       const { error } = await supabase.from("appointments").update({ status }).eq("id", id);
       if (error) throw error;
     },
