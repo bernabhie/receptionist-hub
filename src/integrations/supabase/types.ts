@@ -16,8 +16,10 @@ export type Database = {
     Tables: {
       appointments: {
         Row: {
+          appointment_type: string | null
           created_at: string
           created_by: string | null
+          dentist_id: string | null
           duration_minutes: number
           id: string
           notes: string | null
@@ -28,8 +30,10 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          appointment_type?: string | null
           created_at?: string
           created_by?: string | null
+          dentist_id?: string | null
           duration_minutes?: number
           id?: string
           notes?: string | null
@@ -40,8 +44,10 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          appointment_type?: string | null
           created_at?: string
           created_by?: string | null
+          dentist_id?: string | null
           duration_minutes?: number
           id?: string
           notes?: string | null
@@ -60,6 +66,93 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      dental_records: {
+        Row: {
+          created_at: string
+          dentist_id: string | null
+          diagnosis: string | null
+          id: string
+          notes: string | null
+          patient_id: string
+          prescription: string | null
+          record_date: string
+          treatment_plan: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dentist_id?: string | null
+          diagnosis?: string | null
+          id?: string
+          notes?: string | null
+          patient_id: string
+          prescription?: string | null
+          record_date?: string
+          treatment_plan?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dentist_id?: string | null
+          diagnosis?: string | null
+          id?: string
+          notes?: string | null
+          patient_id?: string
+          prescription?: string | null
+          record_date?: string
+          treatment_plan?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dental_records_dentist_id_fkey"
+            columns: ["dentist_id"]
+            isOneToOne: false
+            referencedRelation: "dentists"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dental_records_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dentists: {
+        Row: {
+          created_at: string
+          full_name: string
+          id: string
+          license_number: string | null
+          specialization: string | null
+          status: string
+          updated_at: string
+          years_experience: number
+        }
+        Insert: {
+          created_at?: string
+          full_name: string
+          id?: string
+          license_number?: string | null
+          specialization?: string | null
+          status?: string
+          updated_at?: string
+          years_experience?: number
+        }
+        Update: {
+          created_at?: string
+          full_name?: string
+          id?: string
+          license_number?: string | null
+          specialization?: string | null
+          status?: string
+          updated_at?: string
+          years_experience?: number
+        }
+        Relationships: []
       }
       invoice_items: {
         Row: {
@@ -103,11 +196,13 @@ export type Database = {
           created_at: string
           created_by: string | null
           id: string
+          invoice_date: string | null
           invoice_number: string
           notes: string | null
           paid_at: string | null
           patient_id: string
           payment_method: string | null
+          payment_status: string | null
           status: Database["public"]["Enums"]["invoice_status"]
           total_amount: number
           updated_at: string
@@ -118,11 +213,13 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          invoice_date?: string | null
           invoice_number: string
           notes?: string | null
           paid_at?: string | null
           patient_id: string
           payment_method?: string | null
+          payment_status?: string | null
           status?: Database["public"]["Enums"]["invoice_status"]
           total_amount?: number
           updated_at?: string
@@ -133,11 +230,13 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           id?: string
+          invoice_date?: string | null
           invoice_number?: string
           notes?: string | null
           paid_at?: string | null
           patient_id?: string
           payment_method?: string | null
+          payment_status?: string | null
           status?: Database["public"]["Enums"]["invoice_status"]
           total_amount?: number
           updated_at?: string
@@ -161,36 +260,105 @@ export type Database = {
       }
       patients: {
         Row: {
+          address: string | null
+          blood_type: string | null
           created_at: string
           date_of_birth: string | null
           email: string | null
           full_name: string
+          gender: string | null
           id: string
+          lifestyle_notes: string | null
+          medical_history: string | null
           notes: string | null
           phone: string | null
           updated_at: string
         }
         Insert: {
+          address?: string | null
+          blood_type?: string | null
           created_at?: string
           date_of_birth?: string | null
           email?: string | null
           full_name: string
+          gender?: string | null
           id?: string
+          lifestyle_notes?: string | null
+          medical_history?: string | null
           notes?: string | null
           phone?: string | null
           updated_at?: string
         }
         Update: {
+          address?: string | null
+          blood_type?: string | null
           created_at?: string
           date_of_birth?: string | null
           email?: string | null
           full_name?: string
+          gender?: string | null
           id?: string
+          lifestyle_notes?: string | null
+          medical_history?: string | null
           notes?: string | null
           phone?: string | null
           updated_at?: string
         }
         Relationships: []
+      }
+      predictive_appointment_schedules: {
+        Row: {
+          appointment_id: string | null
+          confidence_score: number
+          created_at: string
+          id: string
+          model_version: string
+          patient_id: string
+          predicted_day: string
+          predicted_duration: number
+          predicted_time: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_id?: string | null
+          confidence_score?: number
+          created_at?: string
+          id?: string
+          model_version?: string
+          patient_id: string
+          predicted_day: string
+          predicted_duration?: number
+          predicted_time: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_id?: string | null
+          confidence_score?: number
+          created_at?: string
+          id?: string
+          model_version?: string
+          patient_id?: string
+          predicted_day?: string
+          predicted_duration?: number
+          predicted_time?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_appointment_schedules_appointment_id_fkey"
+            columns: ["appointment_id"]
+            isOneToOne: false
+            referencedRelation: "appointments"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_appointment_schedules_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       profiles: {
         Row: {
@@ -209,6 +377,84 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      services: {
+        Row: {
+          base_price: number
+          created_at: string
+          description: string | null
+          id: string
+          service_name: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          base_price?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          service_name: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          base_price?: number
+          created_at?: string
+          description?: string | null
+          id?: string
+          service_name?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      treatments: {
+        Row: {
+          cost: number
+          created_at: string
+          id: string
+          record_id: string
+          remarks: string | null
+          service_id: string
+          treatment_date: string
+          updated_at: string
+        }
+        Insert: {
+          cost?: number
+          created_at?: string
+          id?: string
+          record_id: string
+          remarks?: string | null
+          service_id: string
+          treatment_date?: string
+          updated_at?: string
+        }
+        Update: {
+          cost?: number
+          created_at?: string
+          id?: string
+          record_id?: string
+          remarks?: string | null
+          service_id?: string
+          treatment_date?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "treatments_record_id_fkey"
+            columns: ["record_id"]
+            isOneToOne: false
+            referencedRelation: "dental_records"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "treatments_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       user_roles: {
         Row: {
@@ -247,7 +493,13 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "receptionist"
-      appointment_status: "scheduled" | "completed" | "cancelled" | "no_show"
+      appointment_status:
+        | "scheduled"
+        | "completed"
+        | "cancelled"
+        | "no_show"
+        | "pending"
+        | "confirmed"
       invoice_status: "unpaid" | "paid" | "partial"
     }
     CompositeTypes: {
@@ -377,7 +629,14 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "receptionist"],
-      appointment_status: ["scheduled", "completed", "cancelled", "no_show"],
+      appointment_status: [
+        "scheduled",
+        "completed",
+        "cancelled",
+        "no_show",
+        "pending",
+        "confirmed",
+      ],
       invoice_status: ["unpaid", "paid", "partial"],
     },
   },
